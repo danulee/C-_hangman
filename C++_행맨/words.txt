@@ -1,4 +1,9 @@
-happy
 hello
-jelly
-candy
+hi
+welcome
+happy
+sad
+super
+sorry
+something
+mad

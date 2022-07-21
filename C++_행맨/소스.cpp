@@ -137,7 +137,8 @@ void SetDictionary(vector<string>& strArr)
 }
 
 void StartSetDictionary(){
-		ofstream writeToFile("words.txt");
+     	ofstream writeToFile;
+	    writeToFile.open("words.txt", std::ios_base::out | std::ios_base::app);
 		while (true) {
 			DrawSetDictionary();
 			gotoxy(20, 3);

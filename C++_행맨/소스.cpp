@@ -35,9 +35,13 @@ int GetKeyDown()
 //콘솔 세팅
 void SetConsoleView()
 {	system("mode con:cols=50 lines=20");
-	system("title [HangManGame] by.BlockDMask");
+	system("title [행맨게임]");
 }
 
+
+//화면draw
+
+//단어추가화면 draw
 void DrawSetDictionary() {
 	system("cls");
 	gotoxy(5, 2);
@@ -49,7 +53,6 @@ void DrawSetDictionary() {
 	cout << "메인화면 'qq'" << endl;
 
 }
-
 
 //시작화면 draw
 void DrawReadyGame()
@@ -70,8 +73,6 @@ void DrawReadyGame()
 	gotoxy(9, 14);
 	cout << "by. BlockDMask" << endl;
 }
-
-
 
 //게임화면 draw
 void DrawStartGame(int life, int score, vector<string>& pastWord)
@@ -94,7 +95,17 @@ void DrawStartGame(int life, int score, vector<string>& pastWord)
 	cout << "메인화면 'qq'" << endl;
 }
 
+void DrawLogin() {
+	system("cls");
+	gotoxy(10, 3);
+	cout << "로그인을 해주세요.";
+	gotoxy(10, 5);
+	cout << "아이디 : ";
+	gotoxy(10, 7);
+	cout << "비밀번호 : ";
+}
 
+//화면 draw 끝
 
 //사전을 세팅하는 함수 입니다.
 //[C++] 파일입출력 포스팅 : https://blockdmask.tistory.com/322
@@ -136,6 +147,7 @@ void SetDictionary(vector<string>& strArr)
 	return;
 }
 
+//단어추가 기능
 void StartSetDictionary(){
      	ofstream writeToFile;
 	    writeToFile.open("words.txt", std::ios_base::out | std::ios_base::app);
@@ -157,10 +169,10 @@ void StartSetDictionary(){
 		return;
 	
 }
+
 //시작화면 기능
 bool ReadyGame()
-{
-	while (true)
+{    while (true)
 	{
 		DrawReadyGame();
 		int key = GetKeyDown();
@@ -262,13 +274,55 @@ void StartGame()
 	}
 }
 
+//로그인 함수
+bool doLogin(){ 
+    DrawLogin();
+	string LoginId;
+	string LoginPw;
+	ifstream fp("member.txt");
+	string line1;
+	string line2;
+	while (true) {
+		gotoxy(15, 5);
+		cin >> LoginId;
+		gotoxy(16, 7);
+		cin >> LoginPw;
+		if (fp.is_open()) {
+			while (!fp.eof()) {
+				getline(fp, line1);
+				getline(fp, line2);
+				if (line1 == LoginId) {
+					if (line2 == LoginPw)
+						return true;
+					else {
+						gotoxy(10, 9); 
+						cout << "틀린 비밀번호입니다.";
+						return false;
+					}
+				}
+			}
+		}
+		gotoxy(10, 9);
+		cout << "존재하지 않는 계정입니다.";
+		return false;
+		
+	}
+
+}
+
+
 //메인함수
 int main(void)
 {
 	SetConsoleView();
 	bool isStart = false;
+	bool isLogined = false;
 	while (true)
-	{
+	{   
+		isLogined = doLogin();
+		if (isLogined == false) {
+			continue;
+		}
 		isStart = ReadyGame();
 		if (isStart)
 		{
